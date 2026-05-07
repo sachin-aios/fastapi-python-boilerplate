@@ -1,10 +1,16 @@
 from fastapi import FastAPI
+from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
+import os
 
 app = FastAPI()
 
-app.mount("/", StaticFiles(directory="public", html=True), name="public")
+app.mount("/static", StaticFiles(directory="public"), name="static")
+
+@app.get("/")
+async def home():
+    return FileResponse("public/index.html")
 
 @app.get("/api")
-def home():
-    return {"message": "Mindset Of SN Backend Running"}
+async def api():
+    return {"message": "Mindset Of SN Running"}
